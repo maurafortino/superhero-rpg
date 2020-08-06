@@ -1,0 +1,12 @@
+.character-placeholder{
+    width: 5rem;
+    height: 15rem;
+    background-color: lightgrey;
+    border: solid black 5px;
+    margin: 5px;
+    padding: 0;
+}
+
+.title{
+    font-family: 'Anton', sans-serif
+}
