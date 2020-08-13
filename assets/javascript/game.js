@@ -71,32 +71,38 @@ $(document).ready(function() {
             $("#choose-characters-row").append(addImageDiv);
         };
     };
-    
-    function displayAlert(){
-        alert("You've already chosen a Villian. You must defeat them before choosing another.");
-    };
 
     displayCharacters();
-
-    $(".character-div").on("click", function(){
-        $(this)
-            .empty()
-            .addClass("character-placeholder");
-    });
 
     $(".character").on("click", function(){
         if(!isHeroChosen){
             hero = this.id;
             console.log("hero = " + hero);
+            removeCharacter();
             isHeroChosen = true;
         }else if(isHeroChosen && !isVillianChosen){
             currentVillian = this.id;
             console.log("enemy = " + currentVillian);
+            removeCharacter();
             isVillianChosen = true;
         }else{
+            $(".character-div").unbind("click"); 
             displayAlert();
         }
     
     });
+
+    function removeCharacter(){
+        $(".character-div").on("click", function(){
+            $(this)
+                .empty()
+                .addClass("character-placeholder");
+        });
+    };
+
+    function displayAlert(){
+        alert("You've already chosen a Villian. You must defeat them before choosing another.");
+    };
+
 
 });
