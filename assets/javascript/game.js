@@ -3,11 +3,9 @@ $(document).ready(function() {
     let wins = 0;
     let losses = 0;
     let hero;
-    let villians=[];
     let currentVillian;
     let isHeroChosen = false;
     let isVillianChosen = false;
-    let isGameLive = false;
     let characters = [
         {
             name: 'Miles Morales',
@@ -61,7 +59,7 @@ $(document).ready(function() {
                     width: 200,
                     height: 200,
                     id: characters[i].id,
-                    class: "character enemy"
+                    class: "character"
                 });
             
             $(addImageDiv)
@@ -80,16 +78,16 @@ $(document).ready(function() {
             console.log("hero = " + hero);
             removeCharacter();
             isHeroChosen = true;
+            displayHero();
         }else if(isHeroChosen && !isVillianChosen){
             currentVillian = this.id;
             console.log("enemy = " + currentVillian);
             removeCharacter();
             isVillianChosen = true;
+            displayVillian();
         }else{
-            $(".character-div").unbind("click"); 
             displayAlert();
         }
-    
     });
 
     function removeCharacter(){
@@ -100,9 +98,56 @@ $(document).ready(function() {
         });
     };
 
+    function displayHero(){
+        for(let i = 0; i < characters.length; i++){
+            if(characters[i].id=== hero){
+    
+                let addCharacterImage = $("<img>")
+                .attr({
+                    src: characters[i].image,
+                    width: 200,
+                    height: 200,
+                    id: characters[i].id,
+                    class: "hero character"
+                });
+
+                $("#hero-div")
+                    .append(addCharacterImage)
+                    .append(characters[i].name);
+                
+            };
+        };
+
+        let attackBtn = $("<button>");
+        attackBtn.attr("id", "attack-button").text("attack!");
+        $("#attack").append(attackBtn);
+    };
+
+    function displayVillian(){
+        for(let i = 0; i < characters.length; i++){
+            if(characters[i].id === currentVillian){
+                let addCharacterImage = $("<img>")
+                .attr({
+                    src: characters[i].image,
+                    width: 200,
+                    height: 200,
+                    id: characters[i].id,
+                    class: "villian character"
+                });
+
+                $("#villian-div")
+                    .append(addCharacterImage)
+                    .append(characters[i].name);
+            };
+        };
+    };
+
+    $(document).on("click", "#attack-button", function(){
+        console.log("attack!");
+    });
+
     function displayAlert(){
         alert("You've already chosen a Villian. You must defeat them before choosing another.");
     };
-
 
 });
