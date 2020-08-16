@@ -2,45 +2,48 @@ $(document).ready(function() {
 
     let wins = 0;
     let losses = 0;
+    let villianCount = 0;
     let hero;
     let currentVillian;
     let isHeroChosen = false;
     let isVillianChosen = false;
+    let heroStats = {};
+    let villianStats ={};
     let characters = [
         {
             name: 'Miles Morales',
             id: 'miles',
             value: 'miles-morales',
-            HP: 123,
-            AP: 12,
-            CP: 8,
+            health: 123,
+            attack: 12,
+            counterAttack: 8,
             image: "assets/images/miles.png"
         },
         {
             name: 'Gwen Stacey',
             id: 'gwen',
             value: 'gwen-stacey',
-            HP: 108,
-            AP: 10,
-            CP: 10,
+            health: 108,
+            attack: 10,
+            counterAttack: 10,
             image: "assets/images/gwen.png"
         },
         {
             name: 'Spiderman Noir',
             id: 'noir',
             value: 'spiderman-noir',
-            HP: 114,
-            AP: 17,
-            CP: 11,
+            health: 114,
+            attack: 17,
+            counterAttack: 11,
             image: "assets/images/noir.png"
         },
         {
             name: 'Spider Ham',
             id: 'ham',
             value: 'spider-ham',
-            HP: 97,
-            AP: 12,
-            CP: 8,
+            health: 97,
+            attack: 12,
+            counterAttack: 8,
             image: "assets/images/spiderham.png"
         }
     ];
@@ -80,7 +83,10 @@ $(document).ready(function() {
             isHeroChosen = true;
             displayHero();
         }else if(isHeroChosen && !isVillianChosen){
+            currentVillian;
             currentVillian = this.id;
+            villianCount++;
+            console.log(villianCount);
             console.log("enemy = " + currentVillian);
             removeCharacter();
             isVillianChosen = true;
@@ -114,6 +120,10 @@ $(document).ready(function() {
                 $("#hero-div")
                     .append(addCharacterImage)
                     .append(characters[i].name);
+
+                heroStats.health = characters[i].health;
+                heroStats.attack = characters[i].attack;
+                console.log(heroStats);
                 
             };
         };
@@ -135,15 +145,34 @@ $(document).ready(function() {
                     class: "villian character"
                 });
 
+                $("#villian-div").empty();
                 $("#villian-div")
                     .append(addCharacterImage)
                     .append(characters[i].name);
+
+                villianStats.health = characters[i].health;
+                villianStats.counterAttack = characters[i].counterAttack;
+                console.log(villianStats);
             };
         };
     };
 
     $(document).on("click", "#attack-button", function(){
-        console.log("attack!");
+        if(heroStats.health > 0 && villianStats.health > 0){
+            villianStats.health -= heroStats.attack;
+            heroStats.attack += heroStats.attack;
+            heroStats.health -= villianStats.counterAttack;
+            console.log("hero attack = " + heroStats.attack);
+            console.log("hero health = " + heroStats.health);
+            console.log("villian health = " + villianStats.health);
+            if(villianStats.health <= 0){
+                currentVillian = "";
+                isVillianChosen = false;
+                villianStats = {};
+                console.log(villianStats);
+                alert("choose another villian!");
+            }
+        }
     });
 
     function displayAlert(){
